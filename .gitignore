@@ -1,0 +1,10 @@
+.env
+.swp
+config/production.yaml
+build/
+Godeps/
+!Godeps/Godeps.json
+bin
+.vscode
+.serverless
+node_modules
