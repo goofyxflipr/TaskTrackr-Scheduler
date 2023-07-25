@@ -8,7 +8,7 @@ type UserReport struct {
 }
 
 type Details struct {
-	Name      string    `json:"project_name"`
+	Name      *string    `json:"project_name"`
 	TimeSpent TimeSpent `json:"time_spent"`
 }
 

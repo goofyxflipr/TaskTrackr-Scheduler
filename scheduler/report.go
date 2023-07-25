@@ -19,9 +19,9 @@ func CollectDataForToday() {
 		log.Fatal(err)
 		return
 	}
-	fmt.Println(allUsersToday)
 	// organization_id is mapped to array of user progress for the day.
 	organizationWiseReport := helpers.ParseWorkdayEntryToOrganizationMailReport(allUsersToday)
+	fmt.Println("1")
 	for organization_id, employee_reports := range organizationWiseReport {
 		var adminEmails []*string
 		administrators, err := dao.GetAllAdministrators(organization_id)
@@ -29,12 +29,19 @@ func CollectDataForToday() {
 			log.Fatal(err)
 			return
 		}
+		fmt.Println("2")
+
 		for _, admins := range *administrators {
 			adminEmails = append(adminEmails, admins.Email)
 		}
-		go helpers.SendMailToAdmins(adminEmails, employee_reports, dao.SES)
+		fmt.Println("3")
+
+		helpers.SendMailToAdmins(adminEmails, employee_reports, dao.SES)
+		fmt.Println("4")
+		
 		for _, report := range employee_reports {
-			go helpers.SendMailToUser(report.UserEmail, report.Name, report.Projects, dao.SES)
+		fmt.Println("5")
+			helpers.SendMailToUser(report.UserEmail, report.Name, report.Projects, dao.SES)
 		}
 	}
 }

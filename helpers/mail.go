@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -28,11 +29,15 @@ func MailTemplateLayout(children string) string {
 
 func SendMailToAdmins(admin_emails []*string, reports []models.UserReport, svc *ses.SES) {
 	host_email := os.Getenv("HOST_EMAIL")
+	fmt.Println(host_email)
 	body :=
 		`
 	<div>
 	`
+	fmt.Println("10")
 	for _, report := range reports {
+	fmt.Println("11")
+
 		body +=
 			`
 		<div>
@@ -41,21 +46,30 @@ func SendMailToAdmins(admin_emails []*string, reports []models.UserReport, svc *
 				<span style='color: #0D92FF;'>` + report.UserEmail + `</span>
 			</div>
 		`
+	fmt.Println("12")
+
 		for _, project := range report.Projects {
+	fmt.Println("13")
+
 			body += `
 			<div>
-				<span>` + project.Name + `</span>
+				<span>` + *project.Name + `</span>
 				<span>` + strconv.Itoa(project.TimeSpent.Hours) + `:` + strconv.Itoa(project.TimeSpent.Minutes) + `:` + strconv.Itoa(project.TimeSpent.Seconds) + `</span>
 			</div>
 			`
 		}
+	fmt.Println("14")
+
 		body += `
 		</div>
 		`
 	}
+	fmt.Println("15")
+
 	body += `
 	</div>
 	`
+	fmt.Println(admin_emails)
 
 	input := &ses.SendEmailInput{
 		Destination: &ses.Destination{
@@ -89,7 +103,7 @@ func SendMailToUser(email string, name string, user_report map[string]models.Det
 	for _, projectDetails := range user_report {
 		body += `
 		<div>
-			<span>` + projectDetails.Name + `</span>
+			<span>` + *projectDetails.Name + `</span>
 			<span>` + strconv.Itoa(projectDetails.TimeSpent.Hours) + `:` + strconv.Itoa(projectDetails.TimeSpent.Minutes) + `:` + strconv.Itoa(projectDetails.TimeSpent.Seconds) + `</span>
 		</div>
 		`

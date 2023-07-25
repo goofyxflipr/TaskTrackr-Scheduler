@@ -19,10 +19,12 @@ func ParseWorkdayEntryToOrganizationMailReport(workday *[]models.Workday) (map[s
 		report.UserEmail = *user.Email
 		report.Name = fmt.Sprintln(user.FirstName, " ", user.LastName)
 		
+		report.Projects = make(map[string]models.Details)
 		for project_id, timestring := range entry.LastUpdate {
 			time, _ := strconv.Atoi(timestring)
 			var details models.Details
-			details.Name = *user.Organization.Projects[project_id].ProjectName
+
+			details.Name = user.Organization.Projects[project_id].ProjectName
 			
 			details.TimeSpent.Hours = (time / 3600000) % 24
 			details.TimeSpent.Minutes = (time / 60000) % 60
@@ -31,6 +33,6 @@ func ParseWorkdayEntryToOrganizationMailReport(workday *[]models.Workday) (map[s
 		}
 		organization[user.Organization.ID] = append(organization[user.Organization.ID], report)
 	}
-	fmt.Println(len(organization))
+	fmt.Println("LEN: ",len(organization))
 	return organization
 }
