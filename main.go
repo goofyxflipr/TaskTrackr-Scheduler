@@ -1,19 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"github.com/robfig/cron/v3"
+	// "fmt"
+
+	"github.com/gin-gonic/gin"
+	"github.com/goofynugtz/TaskTrackr-Scheduler/scheduler"
+	// "github.com/robfig/cron/v3"
 )
 
-func mailWorkdayReport() {
-
-}
-
 func main() {
-	c := cron.New()
-	if _, err := c.AddFunc("0 17 * * 1-5", mailWorkdayReport); err != nil {
-		fmt.Println("error setting up cronjob: ", err)
-		return
-	}
-	c.Start()
+	router := gin.Default()
+	scheduler.CollectDataForToday()
+	// c := cron.New()
+	// if _, err := c.AddFunc("* * * * 1-5", scheduler.CollectDataForToday); err != nil {
+	// 	fmt.Println("error setting up cronjob: ", err)
+	// 	return
+	// }
+	// c.Start()
+	router.Run(":8080")
 }

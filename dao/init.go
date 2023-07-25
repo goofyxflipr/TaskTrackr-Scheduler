@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"os"
 
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -9,19 +8,18 @@ import (
 	"github.com/goofynugtz/TaskTrackr-Scheduler/connection"
 )
 
-
 // Tables
-var UsersTable = os.Getenv("USERS_TABLE")
-var UsersEmailIndex = os.Getenv("SECONDARY_USER_INDEX_NAME")
-var WorkdayTable = os.Getenv("WORKDAY_TABLE")
-var WorkdayUserDateIndex = os.Getenv("SECONDARY_WORKDAY_INDEX_NAME")
+var UsersTable = "traktvt-users"
+var UsersEmailIndex = "email-index"
+var WorkdayTable = "traktvt-workday"
+var WorkdayUserDateIndex = "uid-workdate-index"
 
-var HackathonsTable = os.Getenv("HACKATHONS_TABLE")
+var HackathonsTable = "traktvt-hackathons"
 
 // var secondary_hackathons_index = os.Getenv("SECONDARY_HACKATHONS_INDEX_NAME")
 
 // Buckets
-var Bucket = os.Getenv("BUCKET_NAME")
+var Bucket = "traktvt-monitoring-data"
 
 // Connections
 var DynamoDB = dynamodb.New(connection.GetSession())
