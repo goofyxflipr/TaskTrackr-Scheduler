@@ -32,11 +32,11 @@ func SendMailToAdmins(admin_emails []*string, reports []models.UserReport, svc *
 	fmt.Println(host_email)
 	body :=
 		`
-	<div>
+	<div style='margin-top: 1rem; font-size: 18px; font-family: Inter; font-weight: 400;'>
 	`
 	fmt.Println("10")
 	for _, report := range reports {
-	fmt.Println("11")
+		fmt.Println("11")
 
 		body +=
 			`
@@ -44,21 +44,22 @@ func SendMailToAdmins(admin_emails []*string, reports []models.UserReport, svc *
 			<div>
 				<span>` + report.Name + `</span>
 				<span style='color: #0D92FF;'>` + report.UserEmail + `</span>
+				<span style='color: black'>Joined today at: ` + report.TimeJoined + `</span>
 			</div>
 		`
-	fmt.Println("12")
+		fmt.Println("12")
 
 		for _, project := range report.Projects {
-	fmt.Println("13")
-
+			fmt.Println("13")
+			fmt.Println(project)
 			body += `
 			<div>
-				<span>` + *project.Name + `</span>
-				<span>` + strconv.Itoa(project.TimeSpent.Hours) + `:` + strconv.Itoa(project.TimeSpent.Minutes) + `:` + strconv.Itoa(project.TimeSpent.Seconds) + `</span>
+				<span>Project: ` + *project.Name + `</span>
+				<span>Time Spent: ` + strconv.Itoa(project.TimeSpent.Hours) + `:` + strconv.Itoa(project.TimeSpent.Minutes) + `:` + strconv.Itoa(project.TimeSpent.Seconds) + `</span>
 			</div>
 			`
 		}
-	fmt.Println("14")
+		fmt.Println("14")
 
 		body += `
 		</div>
@@ -83,7 +84,7 @@ func SendMailToAdmins(admin_emails []*string, reports []models.UserReport, svc *
 				},
 			},
 			Subject: &ses.Content{
-				Data: aws.String("Daily Employee Report"),
+				Data: aws.String("Admin Employee Report"),
 			},
 		},
 		Source: aws.String(host_email),
@@ -98,13 +99,13 @@ func SendMailToUser(email string, name string, user_report map[string]models.Det
 	host_email := os.Getenv("HOST_EMAIL")
 	body :=
 		`
-	<div>
+	<div style='margin-top: 1rem; font-size: 18px; font-family: Inter; font-weight: 400;'>
 	`
 	for _, projectDetails := range user_report {
 		body += `
 		<div>
-			<span>` + *projectDetails.Name + `</span>
-			<span>` + strconv.Itoa(projectDetails.TimeSpent.Hours) + `:` + strconv.Itoa(projectDetails.TimeSpent.Minutes) + `:` + strconv.Itoa(projectDetails.TimeSpent.Seconds) + `</span>
+			<span>Project: ` + *projectDetails.Name + `</span>
+			<span>Time Spent: ` + strconv.Itoa(projectDetails.TimeSpent.Hours) + `:` + strconv.Itoa(projectDetails.TimeSpent.Minutes) + `:` + strconv.Itoa(projectDetails.TimeSpent.Seconds) + `</span>
 		</div>
 		`
 	}

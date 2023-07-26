@@ -8,3 +8,4 @@ bin
 .vscode
 .serverless
 node_modules
+./TaskTrackr-Scheduler

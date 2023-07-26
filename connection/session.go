@@ -13,7 +13,6 @@ func GetSession() *session.Session {
 	godotenv.Load()
 	access_key := os.Getenv("ACCESS_KEY")
 	secret_key := os.Getenv("SECRET_KEY")
-	fmt.Println(access_key, secret_key)
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String("us-east-1"),
 		Credentials: credentials.NewStaticCredentials(

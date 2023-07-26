@@ -4,8 +4,9 @@ type Workday struct {
 	ID         string            `json:"_id"`
 	UserId     string            `json:"user_id"`
 	Date       string            `json:"workdate"`
+	JoinedAt   string            `json:"joined_at"`
 	WorkedOn   []TimeFrame       `json:"worked_on"`
-	LastUpdate map[string]string `json:"update"`
+	LastUpdate map[string]string `json:"update"` // map[project_id]time_spent
 }
 
 type TimeFrame struct {

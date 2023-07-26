@@ -14,6 +14,8 @@ func CollectDataForToday() {
 	yyyy, mm, dd := time.Now().Date()
 	today := fmt.Sprintf("%v %v, %v", dd, mm, yyyy)
 	// This has data from all different organizations
+	// Also this is different for different timezones
+	fmt.Println(today)
 	allUsersToday, err := dao.GetAllUserDataWorkingOn(today)
 	if err != nil {
 		log.Fatal(err)
@@ -21,7 +23,6 @@ func CollectDataForToday() {
 	}
 	// organization_id is mapped to array of user progress for the day.
 	organizationWiseReport := helpers.ParseWorkdayEntryToOrganizationMailReport(allUsersToday)
-	fmt.Println("1")
 	for organization_id, employee_reports := range organizationWiseReport {
 		var adminEmails []*string
 		administrators, err := dao.GetAllAdministrators(organization_id)
@@ -29,18 +30,14 @@ func CollectDataForToday() {
 			log.Fatal(err)
 			return
 		}
-		fmt.Println("2")
 
 		for _, admins := range *administrators {
 			adminEmails = append(adminEmails, admins.Email)
 		}
-		fmt.Println("3")
 
 		helpers.SendMailToAdmins(adminEmails, employee_reports, dao.SES)
-		fmt.Println("4")
 		
 		for _, report := range employee_reports {
-		fmt.Println("5")
 			helpers.SendMailToUser(report.UserEmail, report.Name, report.Projects, dao.SES)
 		}
 	}

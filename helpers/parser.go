@@ -15,9 +15,11 @@ func ParseWorkdayEntryToOrganizationMailReport(workday *[]models.Workday) (map[s
 	for _, entry := range *workday {
 		user, _ := dao.GetUserById(entry.UserId)
 		var report models.UserReport
+		fmt.Println("n>> ", entry.UserId	)
 		report.UserId = user.ID
 		report.UserEmail = *user.Email
-		report.Name = fmt.Sprintln(user.FirstName, " ", user.LastName)
+		report.Name = fmt.Sprintln(*user.FirstName, " ", *user.LastName)
+		report.TimeJoined = entry.JoinedAt
 		
 		report.Projects = make(map[string]models.Details)
 		for project_id, timestring := range entry.LastUpdate {
@@ -30,6 +32,7 @@ func ParseWorkdayEntryToOrganizationMailReport(workday *[]models.Workday) (map[s
 			details.TimeSpent.Minutes = (time / 60000) % 60
 			details.TimeSpent.Seconds = (time / 1000) % 60
 			report.Projects[project_id] = details
+
 		}
 		organization[user.Organization.ID] = append(organization[user.Organization.ID], report)
 	}
